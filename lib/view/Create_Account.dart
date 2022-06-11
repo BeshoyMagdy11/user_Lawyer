@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../C/Controller1.dart';
+import '../controller/auth_controller.dart';
 import '../my_string.dart';
 import 'create_login.dart';
 
@@ -95,8 +95,8 @@ class CreateAccount extends StatelessWidget {
                   ),
                 ),
               ),
-              GetBuilder<Cont1>(
-                init: (Cont1()),
+              GetBuilder<AuthController>(
+                init: (AuthController()),
                 builder: (con) => Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
                   child: TextFormField(
@@ -141,8 +141,8 @@ class CreateAccount extends StatelessWidget {
                   ),
                 ),
               ),
-              GetBuilder<Cont1>(
-                init: (Cont1()),
+              GetBuilder<AuthController>(
+                init: (AuthController()),
                 builder: (con) => Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
                   child: TextFormField(
@@ -198,8 +198,8 @@ class CreateAccount extends StatelessWidget {
                   ),
                 ),
               ),
-              GetBuilder<Cont1>(
-                init: Cont1(),
+              GetBuilder<AuthController>(
+                init: AuthController(),
                 builder: (c) => Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -231,8 +231,8 @@ class CreateAccount extends StatelessWidget {
                   ],
                 ),
               ),
-              GetBuilder<Cont1>(
-                init: Cont1(),
+              GetBuilder<AuthController>(
+                init: AuthController(),
                 builder: (connn) => ElevatedButton(
                   onPressed: () {
                     if (connn.checkbox == false) {

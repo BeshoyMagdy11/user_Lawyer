@@ -1,36 +1,34 @@
-import 'package:chatapp/app/controllers/auth_controller.dart';
-import 'package:chatapp/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../controller/auth_controller.dart';
 import '../controllers/search_controller.dart';
 
-class SearchView extends GetView<SearchController> {
-  final authC = Get.find<AuthController>();
+class SearchView extends GetView {
+  final authC = Get.put(AuthController(),permanent: true);
+  final con_ser = Get.put(SearchController(),permanent: true);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         child: AppBar(
-          backgroundColor: Colors.red[900],
+          backgroundColor: Color(0xffDA9F5C),
           title: Text('Search'),
           centerTitle: true,
-          leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: Icon(Icons.arrow_back),
-          ),
+
           flexibleSpace: Padding(
             padding: const EdgeInsets.fromLTRB(30, 50, 30, 20),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: TextField(
-                onChanged: (value) => controller.searchFriend(
+                onChanged: (value) => con_ser.searchFriend(
                   value,
                   authC.user.value.email!,
                 ),
-                controller: controller.searchC,
-                cursorColor: Colors.red[900],
+                controller: con_ser.searchC,
+                cursorColor: Color(0xffDA9F5C),
                 decoration: InputDecoration(
                   fillColor: Colors.white,
                   filled: true,
@@ -58,7 +56,7 @@ class SearchView extends GetView<SearchController> {
                     onTap: () {},
                     child: Icon(
                       Icons.search,
-                      color: Colors.red[900],
+                      color: Color(0xffDA9F5C)
                     ),
                   ),
                 ),
@@ -69,7 +67,7 @@ class SearchView extends GetView<SearchController> {
         preferredSize: Size.fromHeight(140),
       ),
       body: Obx(
-        () => controller.tempSearch.length == 0
+        () => con_ser.tempSearch.length == 0
             ? Center(
                 child: Container(
                   width: Get.width * 0.7,
@@ -79,7 +77,7 @@ class SearchView extends GetView<SearchController> {
               )
             : ListView.builder(
                 padding: EdgeInsets.zero,
-                itemCount: controller.tempSearch.length,
+                itemCount: con_ser.tempSearch.length,
                 itemBuilder: (context, index) => ListTile(
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -89,26 +87,26 @@ class SearchView extends GetView<SearchController> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child:
-                          controller.tempSearch[index]["photoUrl"] == "noimage"
+                      con_ser.tempSearch[index]["photoUrl"] == "noimage"
                               ? Image.asset(
                                   "assets/logo/noimage.png",
                                   fit: BoxFit.cover,
                                 )
                               : Image.network(
-                                  controller.tempSearch[index]["photoUrl"],
+                        con_ser.tempSearch[index]["photoUrl"],
                                   fit: BoxFit.cover,
                                 ),
                     ),
                   ),
                   title: Text(
-                    "${controller.tempSearch[index]["name"]}",
+                    "${con_ser.tempSearch[index]["name"]}",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   subtitle: Text(
-                    "${controller.tempSearch[index]["email"]}",
+                    "${con_ser.tempSearch[index]["email"]}",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -116,7 +114,7 @@ class SearchView extends GetView<SearchController> {
                   ),
                   trailing: GestureDetector(
                     onTap: () => authC.addNewConnection(
-                      controller.tempSearch[index]["email"],
+                      con_ser.tempSearch[index]["email"],
                     ),
                     child: Chip(
                       label: Text("Message"),

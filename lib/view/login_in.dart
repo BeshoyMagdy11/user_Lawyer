@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../C/Controller1.dart';
+import '../controller/auth_controller.dart';
 import 'create_login.dart';
 import 'forget_password.dart';
 
@@ -67,8 +67,8 @@ class Lgin_IN extends StatelessWidget {
                   ),
                 ),
               ),
-              GetBuilder<Cont1>(
-                init: (Cont1()),
+              GetBuilder<AuthController>(
+                init: (AuthController()),
                 builder:(c)=>Padding(
                 padding: const EdgeInsets.only(top: 20,right: 20,left: 20),
                 child: TextFormField(
@@ -112,8 +112,8 @@ class Lgin_IN extends StatelessWidget {
                   Get.to(ForgetPasword());
                 }, child:Text('هل نسيت كلمة السر؟',style: TextStyle(fontSize: 20,color: Color(0xffD59042)),)),
               ),
-              GetBuilder<Cont1>(
-                init: Cont1(),
+              GetBuilder<AuthController>(
+                init: AuthController(),
                 builder: (c)=>
                  ElevatedButton(
                   onPressed: () {

@@ -1,10 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.layer">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    
+
+
    <application
         android:label="layer"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
+            android:usesCleartextTraffic="true"
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
@@ -20,6 +29,8 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <meta-data android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyBoD9ZobReDw_Mzkz3V18sIchwVhjyCHAE"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

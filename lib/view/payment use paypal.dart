@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:layer/C/Controller1.dart';
 import 'package:sizer/sizer.dart';
 
+import '../controller/auth_controller.dart';
 import '../routs/app_pages.dart';
 
 
@@ -15,7 +15,7 @@ class Payment_Use_PayPal extends StatelessWidget {
    TextEditingController z=TextEditingController();
    TextEditingController u=TextEditingController();
    final fornKey = GlobalKey<FormState>();
-   final controolr=Get.put(Cont1());
+   final controolr=Get.put(AuthController());
 
 
 

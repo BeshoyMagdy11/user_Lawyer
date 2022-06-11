@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import '../C/Controller1.dart';
-import '../C/contrroler_auth.dart';
+import '../controller/auth_controller.dart';
 import 'Create_Account.dart';
 import 'Home_Screen.dart';
 import 'login_in.dart';
@@ -10,7 +9,7 @@ import 'package:sizer/sizer.dart';
 
 class Create_login_account extends StatelessWidget {
   Create_login_account({Key? key}) : super(key: key);
-  final x = Get.put(Con_Auth(), permanent: true);
+  final x = Get.put(AuthController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,8 +49,8 @@ class Create_login_account extends StatelessWidget {
                   SizedBox(
                     height: 3.h,
                   ),
-                  GetBuilder<Cont1>(
-                    init: Cont1(),
+                  GetBuilder<AuthController>(
+                    init: AuthController(),
                     builder: (c) => SizedBox(
                       height: 6.8.h,
                       child: ElevatedButton(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../C/Controller1.dart';
+import '../controller/auth_controller.dart';
 import '../my_string.dart';
 import 'create_login.dart';
 import 'login_in.dart';
@@ -55,8 +55,8 @@ class ForgetPasword extends StatelessWidget {
                   ),
                 ),
                 Image.asset('assets/images/6321602.jpg'),
-                GetBuilder<Cont1>(
-                  init: (Cont1()),
+                GetBuilder<AuthController>(
+                  init: (AuthController()),
                   builder:(c)=>Padding(
                     padding: const EdgeInsets.only(top: 20,right: 20,left: 20),
                     child: TextFormField(
@@ -93,8 +93,8 @@ class ForgetPasword extends StatelessWidget {
                       ),
                     ), ),),
                 const SizedBox(height: 40,),
-                GetBuilder<Cont1>(
-                  init: Cont1(),
+                GetBuilder<AuthController>(
+                  init: AuthController(),
                   builder: (c)=>
                    ElevatedButton(
                     onPressed: () {

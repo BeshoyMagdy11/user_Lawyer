@@ -1,42 +1,45 @@
-import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:layer/view/profile/views/profile_view.dart';
+import 'package:layer/view/search/views/search_view.dart';
 import 'package:sizer/sizer.dart';
-
-import '../C/contrroler_auth.dart';
-import '../chat_room/chat_room.dart';
-import '../widget/Custm_widget_home_screen.dart';
+import '../controller/auth_controller.dart';
 import 'chat_screen.dart';
-import 'civil_lawyer.dart';
-import 'commercial lawyer.dart';
-import 'criminal lawyer.dart';
-import 'family lawyer.dart';
-import 'lawyer_admin.dart';
+import 'list_lawyer.dart';
+import 'package:layer/view/chat_screen.dart';
+
+import 'mapscreen.dart';
 
 class HomeScreen extends StatelessWidget {
    HomeScreen({Key? key}) : super(key: key);
-  final x=Get.put(Con_Auth(),permanent: true);
+  final x=Get.put(AuthController(),permanent: true);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<Con_Auth>(
-        init: Con_Auth(),
+    return GetBuilder<AuthController>(
+        init: AuthController(),
         builder:(con)=>Scaffold(
-            bottomNavigationBar:  FloatingNavbar(
+            bottomNavigationBar:   CurvedNavigationBar(
+              height: 7.h,
               backgroundColor: Color(0xffDA9F5C),
-              margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-
               onTap: con.change,
-      currentIndex: con.current_index,
+      index: con.current_index,
       items: [
-        FloatingNavbarItem(icon: Icons.home, title: 'Home'),
-        FloatingNavbarItem(icon: Icons.chat_bubble_outline, title: 'Chats'),
+        Icon(Icons.home, size: 4.h),
+        Icon(Icons.chat, size: 4.h),
+        Icon(Icons.search_rounded, size: 4.h),
+        Icon(Icons.map, size: 4.h),
+        Icon(Icons.account_circle, size: 4.h),
       ],
     ),
           body: IndexedStack(index: x.current_index,children: [
-            Chat_room_vieww(),
-            Chat_Screen()
+            List_layer(),
+            Chat_Screen(),
+            SearchView(),
+            MapScreen(),
+            ProfileView(),
           ],),
         ) );
   }

@@ -1,48 +1,27 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:chatapp/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:layer/routs/app_pages.dart';
 
-import '../controllers/profile_controller.dart';
-import '../../../controllers/auth_controller.dart';
+import '../../../controller/auth_controller.dart';
 
-class ProfileView extends GetView<ProfileController> {
+
+class ProfileView extends StatelessWidget {
   final authC = Get.find<AuthController>();
-
-  final ThemeData light = ThemeData(
-    brightness: Brightness.light,
-    primaryColor: Colors.white,
-    accentColor: Colors.black,
-    buttonColor: Colors.red[900],
-  );
-
-  final ThemeData dark = ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: Color(0xFF686D76),
-    accentColor: Colors.white,
-    buttonColor: Colors.red[900],
-  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Get.theme.primaryColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Get.isDarkMode ? Color(0xFF373A40) : Colors.white,
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-            Icons.arrow_back,
-            color: Get.theme.accentColor,
-          ),
-        ),
         actions: [
           IconButton(
             onPressed: () => authC.logout(),
             icon: Icon(
               Icons.logout,
-              color: Get.theme.accentColor,
+              color: Colors.black,
             ),
           ),
         ],
@@ -102,18 +81,7 @@ class ProfileView extends GetView<ProfileController> {
               child: Column(
                 children: [
                   ListTile(
-                    onTap: () => Get.toNamed(Routes.UPDATE_STATUS),
-                    leading: Icon(Icons.note_add_outlined),
-                    title: Text(
-                      "Update Status",
-                      style: TextStyle(
-                        fontSize: 22,
-                      ),
-                    ),
-                    trailing: Icon(Icons.arrow_right),
-                  ),
-                  ListTile(
-                    onTap: () => Get.toNamed(Routes.CHANGE_PROFILE),
+                    onTap: () {},
                     leading: Icon(Icons.person),
                     title: Text(
                       "Change Profile",
@@ -124,7 +92,7 @@ class ProfileView extends GetView<ProfileController> {
                     trailing: Icon(Icons.arrow_right),
                   ),
                   ListTile(
-                    onTap: () => Get.changeTheme(Get.isDarkMode ? light : dark),
+                    onTap: () {},
                     leading: Icon(Icons.color_lens),
                     title: Text(
                       "Change Theme",
@@ -132,7 +100,6 @@ class ProfileView extends GetView<ProfileController> {
                         fontSize: 22,
                       ),
                     ),
-                    trailing: Text(Get.isDarkMode ? "Dark" : "Light"),
                   ),
                 ],
               ),
@@ -147,13 +114,13 @@ class ProfileView extends GetView<ProfileController> {
                 Text(
                   "Chat App",
                   style: TextStyle(
-                    color: Get.isDarkMode ? Colors.white54 : Colors.black54,
+                    color:  Colors.black54,
                   ),
                 ),
                 Text(
                   "v.1.0",
                   style: TextStyle(
-                    color: Get.isDarkMode ? Colors.white54 : Colors.black54,
+                    color:  Colors.black54,
                   ),
                 ),
               ],

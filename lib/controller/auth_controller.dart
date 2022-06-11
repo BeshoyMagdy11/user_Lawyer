@@ -1,14 +1,35 @@
-import 'package:chatapp/app/data/models/users_model.dart';
-import 'package:chatapp/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../Model/data/users_model.dart';
+import '../routs/app_pages.dart';
+import '../view/chat_room/chat_room.dart';
+
 class AuthController extends GetxController {
   var isSkipIntro = false.obs;
   var isAuth = false.obs;
+  bool hidePassword = true;
+  bool checkbox = false;
+  late String disblleusername;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  int current_index = 0;
+  void change(int index) {
+    current_index = index;
+    update();
+  }
+  void onchange() {
+    hidePassword = !hidePassword;
+    update();
+  }
+  void chanfecheckboox() {
+    checkbox = !checkbox;
+    update();
+  }
+
 
   GoogleSignIn _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _currentUser;
@@ -214,7 +235,7 @@ class AuthController extends GetxController {
         user.refresh();
 
         isAuth.value = true;
-        Get.offAllNamed(Routes.HOME);
+        Get.offAllNamed(Routes.HOOME);
       } else {
         print("TIDAK BERHASIL LOGIN");
       }
@@ -224,100 +245,23 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
-    await _googleSignIn.disconnect();
+    //await _googleSignIn.disconnect();
     await _googleSignIn.signOut();
-    Get.offAllNamed(Routes.LOGIN);
+    Get.offAllNamed(Routes.Creat_Sign);
   }
 
-  // PROFILE
-
-  void changeProfile(String name, String status) {
-    String date = DateTime.now().toIso8601String();
-
-    // Update firebase
-    CollectionReference users = firestore.collection('users');
-
-    users.doc(_currentUser!.email).update({
-      "name": name,
-      "keyName": name.substring(0, 1).toUpperCase(),
-      "status": status,
-      "lastSignInTime":
-          userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
-      "updatedTime": date,
-    });
-
-    // Update model
-    user.update((user) {
-      user!.name = name;
-      user.keyName = name.substring(0, 1).toUpperCase();
-      user.status = status;
-      user.lastSignInTime =
-          userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
-      user.updatedTime = date;
-    });
-
-    user.refresh();
-    Get.defaultDialog(title: "Success", middleText: "Change Profile success");
-  }
-
-  void updateStatus(String status) {
-    String date = DateTime.now().toIso8601String();
-    // Update firebase
-    CollectionReference users = firestore.collection('users');
-
-    users.doc(_currentUser!.email).update({
-      "status": status,
-      "lastSignInTime":
-          userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
-      "updatedTime": date,
-    });
-
-    // Update model
-    user.update((user) {
-      user!.status = status;
-      user.lastSignInTime =
-          userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
-      user.updatedTime = date;
-    });
-
-    user.refresh();
-    Get.defaultDialog(title: "Success", middleText: "Update status success");
-  }
-
-  void updatePhotoUrl(String url) async {
-    String date = DateTime.now().toIso8601String();
-    // Update firebase
-    CollectionReference users = firestore.collection('users');
-
-    await users.doc(_currentUser!.email).update({
-      "photoUrl": url,
-      "updatedTime": date,
-    });
-
-    // Update model
-    user.update((user) {
-      user!.photoUrl = url;
-      user.updatedTime = date;
-    });
-
-    user.refresh();
-    Get.defaultDialog(
-        title: "Success", middleText: "Change photo profile success");
-  }
-  // SEARCH
 
   void addNewConnection(String friendEmail) async {
     bool flagNewConnection = false;
     var chat_id;
     String date = DateTime.now().toIso8601String();
     CollectionReference chats = firestore.collection("chats");
-    CollectionReference users = firestore.collection("users");
+    CollectionReference users = firestore.collection("lawyer");
 
     final docChats =
-        await users.doc(_currentUser!.email).collection("chats").get();
+        await users.doc(_currentUser!.email).collection("lawyer").get();
 
     if (docChats.docs.length != 0) {
-      // user sudah pernah chat dengan siapapun
       final checkConnection = await users
           .doc(_currentUser!.email)
           .collection("chats")
@@ -325,19 +269,12 @@ class AuthController extends GetxController {
           .get();
 
       if (checkConnection.docs.length != 0) {
-        // sudah pernah buat koneksi dengan => friendEmail
         flagNewConnection = false;
-
-        //chat_id from chats collection
         chat_id = checkConnection.docs[0].id;
       } else {
-        // blm pernah buat koneksi dengan => friendEmail
-        // buat koneksi ....
         flagNewConnection = true;
       }
     } else {
-      // blm pernah chat dengan siapapun
-      // buat koneksi ....
       flagNewConnection = true;
     }
 
@@ -358,7 +295,6 @@ class AuthController extends GetxController {
       ).get();
 
       if (chatsDocs.docs.length != 0) {
-        // terdapat data chats (sudah ada koneksi antara mereka berdua)
         final chatDataId = chatsDocs.docs[0].id;
         final chatsData = chatsDocs.docs[0].data() as Map<String, dynamic>;
 
@@ -400,14 +336,12 @@ class AuthController extends GetxController {
 
         user.refresh();
       } else {
-        // buat baru , mereka berdua benar2 belum ada koneksi
         final newChatDoc = await chats.add({
           "connections": [
             _currentUser!.email,
             friendEmail,
           ],
         });
-
         await chats.doc(newChatDoc.id).collection("chat");
 
         await users
@@ -473,12 +407,113 @@ class AuthController extends GetxController {
         .doc(chat_id)
         .update({"total_unread": 0});
 
-    Get.toNamed(
-      Routes.CHAT_ROOM,
+    Get.to(
+      Chat_room_vieww(),
       arguments: {
         "chat_id": "$chat_id",
         "friendEmail": friendEmail,
       },
     );
+  }
+  void SignInwithEmail({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await auth
+          .createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      )
+          .then((value) {
+        disblleusername = name;
+        auth.currentUser!.updateDisplayName(name);
+      });
+      update();
+      Get.offAllNamed(Routes.HOOME);
+
+      // ignore: nullable_type_in_catch_clause
+    } on FirebaseAuthException catch (Errore) {
+      String title = Errore.code.replaceAll(RegExp('-'), ' ').capitalize!;
+      String massage = '';
+      if (Errore.code == 'weak-password') {
+        massage = "The password provided is too weak";
+      } else if (Errore.code == 'email-already-in-use') {
+        massage = "The account already exists for that email";
+      } else {
+        massage = Errore.message.toString();
+      }
+      Get.snackbar(title, massage,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xffD59042),
+          colorText: Colors.white);
+    } catch (error) {
+      Get.snackbar('Errore', error.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xffD59042),
+          colorText: Colors.white);
+    }
+  }
+  void ResetPassword({required String email}) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      update();
+      Get.back();
+      ;
+    } on FirebaseAuthException catch (e) {
+      String title = e.code.replaceAll(RegExp('-'), ' ').capitalize!;
+      String massage = '';
+      if (e.code == 'user-not-found') {
+        massage =
+        ' Account does not exists for that $email.. Create your account by signing up..';
+      } else {
+        massage = e.message.toString();
+      }
+      Get.snackbar(title, massage,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xffD59042),
+          colorText: Colors.white);
+    } catch (error) {
+      Get.snackbar('Errore', error.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xffD59042),
+          colorText: Colors.white);
+    }
+  }
+  void SignUpUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) => disblleusername = auth.currentUser!.displayName!);
+      update();
+      Get.offAllNamed(Routes.HOOME);
+    } on FirebaseAuthException catch (e) {
+      String title = e.code.replaceAll(RegExp('-'), ' ').capitalize!;
+      String massage = '';
+      if (e.code == 'user-not-found') {
+        massage =
+        ' Account does not exists for that $email.. Create your account by signing up..';
+        print(e);
+      } else if (e.code == 'wrong-password') {
+        massage = ' Invalid Password... PLease try again! ';
+        print(e);
+      } else {
+        massage = e.message.toString();
+      }
+      Get.snackbar(title, massage,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xffD59042),
+          colorText: Colors.white);
+    } catch (error) {
+      Get.snackbar('Errore', error.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xffD59042),
+          colorText: Colors.white);
+      print(error);
+    }
   }
 }

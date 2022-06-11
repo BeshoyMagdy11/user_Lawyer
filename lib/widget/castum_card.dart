@@ -5,8 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 
-import '../C/Controller1.dart';
-import '../V/payment use paypal.dart';
+import '../view/payment use paypal.dart';
 import 'castum_widget_payment.dart';
 
 class Castum_Card extends StatelessWidget {
@@ -15,7 +14,13 @@ class Castum_Card extends StatelessWidget {
   String stars;
   String city;
   String text;
-  Castum_Card(this.imge, this.name, this.stars, this.city, this.text);
+  String salary;
+  Castum_Card(
+      {required this.imge,
+      required this.name,
+      required this.stars,
+      required this.city,
+      required this.text,required this.salary});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +65,7 @@ class Castum_Card extends StatelessWidget {
                                           height: 2.h,
                                         ),
                                         InkWell(
-                                          onTap: (){
+                                          onTap: () {
                                             Get.to(Payment_Use_PayPal());
                                           },
                                           child: Custom_payment(
@@ -87,14 +92,13 @@ class Castum_Card extends StatelessWidget {
                                         InkWell(
                                           child: Custom_payment(
                                             image:
-                                            'assets/images/credit-card.png',
+                                                'assets/images/credit-card.png',
                                             height: 7.h,
                                             width: 7.h,
                                             text: ' credit card',
                                           ),
                                         )
-
-                                        ],
+                                      ],
                                     ),
                                   ),
                                   decoration: BoxDecoration(
@@ -153,7 +157,7 @@ class Castum_Card extends StatelessWidget {
                 ),
                 Expanded(
                     flex: 2,
-                    child: Image.asset(
+                    child: Image.network(
                       imge,
                       height: 10.h,
                     )),
@@ -188,7 +192,7 @@ class Castum_Card extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    'سعر الحجز يبدا من 200 جنيه',
+                    salary,
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
                   ),

@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../chat_room/chat_room.dart';
 import '../controller/auth_controller.dart';
 import '../controller/con_list_layer.dart';
-import '../profile/views/profile_view.dart';
-import '../search/views/search_view.dart';
+import 'chat_room/chat_room.dart';
 
 class Chat_Screen extends StatelessWidget {
   Chat_Screen({Key? key}) : super(key: key);
