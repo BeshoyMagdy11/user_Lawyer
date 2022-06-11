@@ -4,7 +4,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:layer/C/Controller1.dart';
 import 'package:sizer/sizer.dart';
 
-import 'chat.dart';
+import '../routs/app_pages.dart';
+
 
 
 class Payment_Use_PayPal extends StatelessWidget {
@@ -199,10 +200,8 @@ class Payment_Use_PayPal extends StatelessWidget {
                       colorText: Colors.white
                   );
                 }else{
-                  Get.to(Chat());
-
+                  Get.toNamed(Routes.CHAT_ROOM);
                 }
-
               },
               child: Padding(
                 padding:  EdgeInsets.symmetric(horizontal:17.h,vertical: 0.3.h ),
